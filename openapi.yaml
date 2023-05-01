@@ -1,0 +1,30 @@
+openapi: 3.0.1
+info:
+  title: C6-Node Plugin
+  description: Plugin for C6-Node functionality.
+  version: 'v1'
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/get:
+    get:
+      operationId: getFunction  # Add this line
+      summary: Get function
+      parameters:
+      - in: query
+        name: id
+        schema:
+            type: string
+        required: true
+        description: The ID to get.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+
