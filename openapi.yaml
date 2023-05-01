@@ -1,22 +1,22 @@
 openapi: 3.0.1
 info:
-  title: C6-Node Plugin
-  description: Plugin for C6-Node functionality.
+  title: AutoEditr Plugin
+  description: Plugin for AutoEditr functionality.
   version: 'v1'
 servers:
   - url: http://localhost:3000
 paths:
-  /api/get:
+  /api/list:
     get:
-      operationId: getFunction  # Add this line
-      summary: Get function
+      operationId: listFunction
+      summary: List directory contents
       parameters:
       - in: query
-        name: id
+        name: path
         schema:
-            type: string
+          type: string
         required: true
-        description: The ID to get.
+        description: The relative path within the directory to list contents.
       responses:
         "200":
           description: OK
@@ -27,4 +27,139 @@ paths:
                 properties:
                   result:
                     type: string
-
+  /api/mkdir:
+    post:
+      operationId: mkdirFunction
+      summary: Create a directory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+  /api/rmdir:
+    delete:
+      operationId: rmdirFunction
+      summary: Delete a directory
+      parameters:
+      - in: query
+        name: path
+        schema:
+          type: string
+        required: true
+        description: The relative path of the directory to delete.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+  /api/readfile:
+    get:
+      operationId: readFileFunction
+      summary: Read a file
+      parameters:
+      - in: query
+        name: path
+        schema:
+          type: string
+        required: true
+        description: The relative path of the file to read.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+  /api/writefile:
+    post:
+      operationId: writeFileFunction
+      summary: Write a file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+                content:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+  /api/deletefile:
+    delete:
+      operationId: deleteFileFunction
+      summary: Delete a file
+      parameters:
+      - in: query
+        name: path
+        schema:
+          type: string
+        required: true
+        description: The relative path of the file to delete.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+  /api/rename:
+    post:
+      operationId: renameFunction
+      summary: Rename a file or directory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPath:
+                  type: string
+                newPath:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
