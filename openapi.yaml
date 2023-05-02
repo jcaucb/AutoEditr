@@ -163,3 +163,67 @@ paths:
                 properties:
                   result:
                     type: string
+  /api/searchreplace:
+    post:
+      operationId: searchReplaceFunction
+      summary: Search and replace text in a file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filePath:
+                  type: string
+                searchPattern:
+                  type: string
+                replacementText:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      message:
+                        type: string
+                      occurrencesReplaced:
+                        type: integer
+  /api/copy:
+    post:
+      operationId: copyFunction
+      summary: Copy a file or directory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourcePath:
+                  type: string
+                destinationPath:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      message:
+                        type: string

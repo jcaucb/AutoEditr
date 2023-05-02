@@ -5,13 +5,13 @@ const readFile = require('./readFile');
 const writeFile = require('./writeFile');
 const deleteFile = require('./deleteFile');
 const rename = require('./rename');
+const searchReplace = require('./searchReplace');
+const copy = require('./copy');
 
 module.exports = (app) => {
   // Define the API endpoints for the plugin
-  // API Documentation: https://example.com/api-docs (Replace with actual documentation URL)
 
   // List directory contents
-  // GET /api/list?path={relativePath}
   app.get('/api/list', (req, res) => {
     const relativePath = req.query.path;
     const result = list(relativePath);
@@ -19,7 +19,6 @@ module.exports = (app) => {
   });
 
   // Create a directory
-  // POST /api/mkdir { "path": "{relativePath}" }
   app.post('/api/mkdir', (req, res) => {
     const relativePath = req.body.path;
     const result = mkdir(relativePath);
@@ -27,7 +26,6 @@ module.exports = (app) => {
   });
 
   // Delete a directory
-  // DELETE /api/rmdir?path={relativePath}
   app.delete('/api/rmdir', (req, res) => {
     const relativePath = req.query.path;
     const result = rmdir(relativePath);
@@ -35,7 +33,6 @@ module.exports = (app) => {
   });
 
   // Read a file
-  // GET /api/readFile?path={relativePath}
   app.get('/api/readFile', (req, res) => {
     const relativePath = req.query.path;
     const result = readFile(relativePath);
@@ -43,7 +40,6 @@ module.exports = (app) => {
   });
 
   // Write a file
-  // POST /api/writeFile { "path": "{relativePath}", "content": "{fileContent}" }
   app.post('/api/writeFile', (req, res) => {
     const relativePath = req.body.path;
     const content = req.body.content;
@@ -52,7 +48,6 @@ module.exports = (app) => {
   });
 
   // Delete a file
-  // DELETE /api/deleteFile?path={relativePath}
   app.delete('/api/deleteFile', (req, res) => {
     const relativePath = req.query.path;
     const result = deleteFile(relativePath);
@@ -60,11 +55,27 @@ module.exports = (app) => {
   });
 
   // Rename a file or directory
-  // POST /api/rename { "oldPath": "{oldRelativePath}", "newPath": "{newRelativePath}" }
   app.post('/api/rename', (req, res) => {
     const oldPath = req.body.oldPath;
     const newPath = req.body.newPath;
     const result = rename(oldPath, newPath);
+    res.json(result);
+  });
+
+  // Search and replace text in a file
+  app.post('/api/searchReplace', (req, res) => {
+    const filePath = req.body.filePath;
+    const searchPattern = req.body.searchPattern;
+    const replacementText = req.body.replacementText;
+    const result = searchReplace(filePath, searchPattern, replacementText);
+    res.json(result);
+  });
+
+  // Copy a file or directory
+  app.post('/api/copy', (req, res) => {
+    const sourcePath = req.body.sourcePath;
+    const destinationPath = req.body.destinationPath;
+    const result = copy(sourcePath, destinationPath);
     res.json(result);
   });
 };
