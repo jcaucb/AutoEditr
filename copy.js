@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const playgroundDir = path.join(__dirname, 'playground');
+
+// Load environment variables from .env file
+require('dotenv').config();
+
+// Define the playground directory using environment variable
+const playgroundDir = process.env.PLAYGROUND_DIR;
 
 const copyFile = (source, destination) => {
   const readStream = fs.createReadStream(source);

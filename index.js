@@ -15,8 +15,11 @@ app.use(bodyParser.json());
 // Middleware to enable CORS
 app.use(cors());
 
-// Define the playground directory
-const playgroundDir = path.join(__dirname, 'playground');
+// Load environment variables from .env file
+require('dotenv').config();
+
+// Define the playground directory using environment variable
+const playgroundDir = process.env.PLAYGROUND_DIR;
 
 // Create the playground directory if it doesn't exist
 if (!fs.existsSync(playgroundDir)) {
