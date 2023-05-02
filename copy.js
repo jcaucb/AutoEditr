@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const playgroundDir = path.join(__dirname, 'playground');
 
 const copyFile = (source, destination) => {
   const readStream = fs.createReadStream(source);
@@ -27,8 +28,8 @@ const copyDirectory = (source, destination) => {
 const copy = (sourcePath, destinationPath) => {
   try {
     // Resolve the source and destination paths
-    const resolvedSourcePath = path.resolve(__dirname, '..', sourcePath);
-    const resolvedDestinationPath = path.resolve(__dirname, '..', destinationPath);
+    const resolvedSourcePath = path.join(playgroundDir, sourcePath);
+    const resolvedDestinationPath = path.join(playgroundDir, destinationPath);
 
     // Check if the source exists
     if (!fs.existsSync(resolvedSourcePath)) {

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const playgroundDir = path.join(__dirname, 'playground');
 
 const list = (relativePath) => {
   try {
@@ -8,7 +9,7 @@ const list = (relativePath) => {
       return { status: 'error', message: 'Path is required.' };
     }
 
-    const fullPath = path.join(__dirname, 'playground', relativePath);
+    const fullPath = path.join(playgroundDir, relativePath);
     if (!fs.existsSync(fullPath)) {
       return { status: 'error', message: 'Directory does not exist.' };
     }
