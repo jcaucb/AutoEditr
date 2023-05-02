@@ -14,15 +14,26 @@ function isPathInPlayground(targetPath) {
  * @returns {Object} An object containing the result or an error message.
  */
 function rmdir(relativePath) {
-  if (!isPathInPlayground(relativePath)) {
-    return { error: 'Path is outside of the playground directory.' };
+  try {
+    // Input validation
+    if (!relativePath) {
+      return { status: 'error', message: 'Path is required.' };
+    }
+
+    if (!isPathInPlayground(relativePath)) {
+      return { status: 'error', message: 'Path is outside of the playground directory.' };
+    }
+
+    const targetPath = path.join(playgroundDir, relativePath);
+    if (!fs.existsSync(targetPath)) {
+      return { status: 'error', message: 'Directory does not exist.' };
+    }
+
+    fs.rmdirSync(targetPath, { recursive: true });
+    return { status: 'success', message: 'Directory deleted successfully.' };
+  } catch (error) {
+    return { status: 'error', message: error.message };
   }
-  const targetPath = path.join(playgroundDir, relativePath);
-  if (!fs.existsSync(targetPath)) {
-    return { error: 'Directory does not exist.' };
-  }
-  fs.rmdirSync(targetPath, { recursive: true });
-  return { result: 'Directory deleted successfully.' };
 }
 
 module.exports = rmdir;

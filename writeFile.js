@@ -15,12 +15,25 @@ function isPathInPlayground(targetPath) {
  * @returns {Object} An object containing the result or an error message.
  */
 function writeFile(relativePath, content) {
-  if (!isPathInPlayground(relativePath)) {
-    return { error: 'Path is outside of the playground directory.' };
+  try {
+    // Input validation
+    if (!relativePath) {
+      return { status: 'error', message: 'Path is required.' };
+    }
+    if (content === undefined) {
+      return { status: 'error', message: 'Content is required.' };
+    }
+
+    if (!isPathInPlayground(relativePath)) {
+      return { status: 'error', message: 'Path is outside of the playground directory.' };
+    }
+
+    const targetPath = path.join(playgroundDir, relativePath);
+    fs.writeFileSync(targetPath, content);
+    return { status: 'success', message: 'File written successfully.' };
+  } catch (error) {
+    return { status: 'error', message: error.message };
   }
-  const targetPath = path.join(playgroundDir, relativePath);
-  fs.writeFileSync(targetPath, content);
-  return { result: 'File written successfully.' };
 }
 
 module.exports = writeFile;

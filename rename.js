@@ -15,16 +15,27 @@ function isPathInPlayground(targetPath) {
  * @returns {Object} An object containing the result or an error message.
  */
 function rename(oldPath, newPath) {
-  if (!isPathInPlayground(oldPath) || !isPathInPlayground(newPath)) {
-    return { error: 'Path is outside of the playground directory.' };
+  try {
+    // Input validation
+    if (!oldPath || !newPath) {
+      return { status: 'error', message: 'Both oldPath and newPath are required.' };
+    }
+
+    if (!isPathInPlayground(oldPath) || !isPathInPlayground(newPath)) {
+      return { status: 'error', message: 'Path is outside of the playground directory.' };
+    }
+
+    const targetOldPath = path.join(playgroundDir, oldPath);
+    const targetNewPath = path.join(playgroundDir, newPath);
+    if (!fs.existsSync(targetOldPath)) {
+      return { status: 'error', message: 'File or directory does not exist.' };
+    }
+
+    fs.renameSync(targetOldPath, targetNewPath);
+    return { status: 'success', message: 'File or directory renamed successfully.' };
+  } catch (error) {
+    return { status: 'error', message: error.message };
   }
-  const targetOldPath = path.join(playgroundDir, oldPath);
-  const targetNewPath = path.join(playgroundDir, newPath);
-  if (!fs.existsSync(targetOldPath)) {
-    return { error: 'File or directory does not exist.' };
-  }
-  fs.renameSync(targetOldPath, targetNewPath);
-  return { result: 'File or directory renamed successfully.' };
 }
 
 module.exports = rename;
