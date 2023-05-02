@@ -55,6 +55,10 @@ The following API endpoints are available:
 
 - `POST /api/rename`: Renames a file or directory within the playground. The request body should contain a JSON object with the properties `oldPath` (the current relative path) and `newPath` (the new relative path).
 
+- `POST /api/searchreplace`: Performs a search and replace operation on the specified file within the playground. The request body should contain a JSON object with the properties `filePath` (the relative path of the file), `searchPattern` (the text to search for), and `replacementText` (the text to replace the search pattern with).
+
+- `POST /api/copy`: Copies a file or directory within the playground. The request body should contain a JSON object with the properties `sourcePath` (the relative path of the source file or directory) and `destinationPath` (the relative path of the destination file or directory).
+
 ## Notes
 
 - The application creates and operates within a designated "playground" directory on the server's filesystem. All file and directory operations are restricted to this playground directory.
