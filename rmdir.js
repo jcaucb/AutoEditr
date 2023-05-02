@@ -29,7 +29,7 @@ function rmdir(relativePath) {
       return { status: 'error', message: 'Directory does not exist.' };
     }
 
-    fs.rmdirSync(targetPath, { recursive: true });
+    fs.rmSync(targetPath, { recursive: true, force: true });
     return { status: 'success', message: 'Directory deleted successfully.' };
   } catch (error) {
     return { status: 'error', message: error.message };
