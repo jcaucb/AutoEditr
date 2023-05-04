@@ -9,7 +9,7 @@ paths:
   /api/list:
     get:
       operationId: listFunction
-      summary: List directory contents
+      summary: List directory contents. To list contents of the "working folder", "root directory", or "playground", use "." as the path.
       parameters:
       - in: query
         name: path
@@ -74,7 +74,7 @@ paths:
   /api/readfile:
     get:
       operationId: readFileFunction
-      summary: Read a file
+      summary: Read a file. If an error occurs due to the filename not being available, consider using the listFunction recursively to see available files.
       parameters:
       - in: query
         name: path
