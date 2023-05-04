@@ -19,7 +19,16 @@ const list = (relativePath) => {
       return { status: 'error', message: 'Directory does not exist.' };
     }
 
-    const contents = fs.readdirSync(fullPath);
+    const contents = fs.readdirSync(fullPath).map(file => {
+      const filePath = path.join(fullPath, file);
+      const stats = fs.statSync(filePath);
+      return {
+        name: file,
+        size: stats.size,
+        // Add more metadata as needed
+      };
+    });
+
     return { status: 'success', data: contents };
   } catch (error) {
     return { status: 'error', message: error.message };
