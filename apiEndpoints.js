@@ -7,6 +7,7 @@ const deleteFile = require('./deleteFile');
 const rename = require('./rename');
 const searchReplace = require('./searchReplace');
 const copy = require('./copy');
+const appendFile = require('./append');
 
 module.exports = (app) => {
   // Define the API endpoints for the plugin
@@ -76,6 +77,14 @@ module.exports = (app) => {
     const sourcePath = req.body.sourcePath;
     const destinationPath = req.body.destinationPath;
     const result = copy(sourcePath, destinationPath);
+    res.json(result);
+  });
+
+  // Append data to a file
+  app.post('/api/append', (req, res) => {
+    const relativePath = req.body.path;
+    const data = req.body.data;
+    const result = appendFile(relativePath, data);
     res.json(result);
   });
 };

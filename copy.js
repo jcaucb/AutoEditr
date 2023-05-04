@@ -8,29 +8,34 @@ require('dotenv').config();
 const playgroundDir = process.env.PLAYGROUND_DIR;
 
 const copyFile = (source, destination) => {
-  const readStream = fs.createReadStream(source);
-  const writeStream = fs.createWriteStream(destination);
-  readStream.pipe(writeStream);
+  return new Promise((resolve, reject) => {
+    const readStream = fs.createReadStream(source);
+    const writeStream = fs.createWriteStream(destination);
+    readStream.on('error', reject);
+    writeStream.on('error', reject);
+    writeStream.on('finish', resolve);
+    readStream.pipe(writeStream);
+  });
 };
 
-const copyDirectory = (source, destination) => {
+const copyDirectory = async (source, destination) => {
   if (!fs.existsSync(destination)) {
     fs.mkdirSync(destination);
   }
   const files = fs.readdirSync(source);
-  files.forEach((file) => {
+  for (const file of files) {
     const sourcePath = path.join(source, file);
     const destinationPath = path.join(destination, file);
     const stat = fs.statSync(sourcePath);
     if (stat.isDirectory()) {
-      copyDirectory(sourcePath, destinationPath);
+      await copyDirectory(sourcePath, destinationPath);
     } else {
-      copyFile(sourcePath, destinationPath);
+      await copyFile(sourcePath, destinationPath);
     }
-  });
+  }
 };
 
-const copy = (sourcePath, destinationPath) => {
+const copy = async (sourcePath, destinationPath) => {
   try {
     // Resolve the source and destination paths
     const resolvedSourcePath = path.join(playgroundDir, sourcePath);
@@ -44,9 +49,9 @@ const copy = (sourcePath, destinationPath) => {
     // Check if the source is a file or directory
     const stat = fs.statSync(resolvedSourcePath);
     if (stat.isDirectory()) {
-      copyDirectory(resolvedSourcePath, resolvedDestinationPath);
+      await copyDirectory(resolvedSourcePath, resolvedDestinationPath);
     } else {
-      copyFile(resolvedSourcePath, resolvedDestinationPath);
+      await copyFile(resolvedSourcePath, resolvedDestinationPath);
     }
 
     // Verification step

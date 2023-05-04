@@ -227,3 +227,34 @@ paths:
                         type: string
                       message:
                         type: string
+  /api/append:
+    post:
+      operationId: appendFunction
+      summary: Append data to a file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+                data:
+                  type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      message:
+                        type: string
+
