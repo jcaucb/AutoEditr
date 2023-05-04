@@ -35,6 +35,13 @@ function writeFile(relativePath, content) {
 
     const targetPath = path.join(playgroundDir, relativePath);
     fs.writeFileSync(targetPath, content);
+
+    // Verification step
+    const fileContent = fs.readFileSync(targetPath, 'utf8');
+    if (fileContent !== content) {
+      throw new Error('Write operation failed. File content does not match the expected content.');
+    }
+
     return { status: 'success', message: 'File written successfully.' };
   } catch (error) {
     return { status: 'error', message: error.message };

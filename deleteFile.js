@@ -35,6 +35,12 @@ function deleteFile(relativePath) {
     }
 
     fs.unlinkSync(targetPath);
+
+    // Verification step
+    if (fs.existsSync(targetPath)) {
+      throw new Error('Delete operation failed. File still exists.');
+    }
+
     return { status: 'success', message: 'File deleted successfully.' };
   } catch (error) {
     return { status: 'error', message: error.message };

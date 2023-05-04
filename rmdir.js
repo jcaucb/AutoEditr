@@ -35,6 +35,12 @@ function rmdir(relativePath) {
     }
 
     fs.rmSync(targetPath, { recursive: true, force: true });
+
+    // Verification step
+    if (fs.existsSync(targetPath)) {
+      throw new Error('Delete operation failed. Directory still exists.');
+    }
+
     return { status: 'success', message: 'Directory deleted successfully.' };
   } catch (error) {
     return { status: 'error', message: error.message };

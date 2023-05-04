@@ -20,6 +20,12 @@ const mkdir = (relativePath) => {
     }
 
     fs.mkdirSync(fullPath, { recursive: true });
+
+    // Verification step
+    if (!fs.existsSync(fullPath)) {
+      throw new Error('Directory creation failed. Directory does not exist.');
+    }
+
     return { status: 'success', message: 'Directory created successfully.' };
   } catch (error) {
     return { status: 'error', message: error.message };

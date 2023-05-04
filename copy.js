@@ -49,6 +49,11 @@ const copy = (sourcePath, destinationPath) => {
       copyFile(resolvedSourcePath, resolvedDestinationPath);
     }
 
+    // Verification step
+    if (!fs.existsSync(resolvedDestinationPath)) {
+      throw new Error('Copy operation failed. Destination does not exist.');
+    }
+
     return { status: 'success', message: 'Copy operation successful.' };
   } catch (error) {
     return { status: 'error', message: error.message };

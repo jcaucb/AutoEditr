@@ -37,6 +37,12 @@ function rename(oldPath, newPath) {
     }
 
     fs.renameSync(targetOldPath, targetNewPath);
+
+    // Verification step
+    if (!fs.existsSync(targetNewPath)) {
+      throw new Error('Rename operation failed. New file or directory does not exist.');
+    }
+
     return { status: 'success', message: 'File or directory renamed successfully.' };
   } catch (error) {
     return { status: 'error', message: error.message };

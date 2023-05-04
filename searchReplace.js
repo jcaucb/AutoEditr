@@ -26,6 +26,12 @@ const searchReplace = (filePath, searchPattern, replacementText) => {
     // Write the updated content back to the file
     fs.writeFileSync(targetPath, newContent, 'utf8');
 
+    // Verification step
+    const updatedFileContent = fs.readFileSync(targetPath, 'utf8');
+    if (updatedFileContent !== newContent) {
+      throw new Error('Search and replace operation failed. Updated file content does not match the expected content.');
+    }
+
     // Count the number of occurrences replaced
     const occurrencesReplaced = (fileContent.match(new RegExp(searchPattern, 'g')) || []).length;
 
