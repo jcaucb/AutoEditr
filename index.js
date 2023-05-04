@@ -9,11 +9,31 @@ const apiEndpoints = require('./apiEndpoints');
 
 const app = express();
 
+console.log('Server starting...');
+
+console.log('Before bodyParser.json()');
+
 // Middleware to parse JSON request bodies
 app.use(bodyParser.json());
 
+console.log('After bodyParser.json()');
+
+app.use((err, req, res, next) => {
+  console.log('Error:', err);
+  if (err instanceof SyntaxError) {
+    console.log('JSON parsing error:', err);
+    res.status(400).send('Content too long. Split content and use appendFunction for remaining parts.');
+  } else {
+    next(err);
+  }
+});
+
+console.log('After error handling middleware');
+
 // Middleware to enable CORS
 app.use(cors());
+
+console.log('After CORS middleware');
 
 // Load environment variables from .env file
 require('dotenv').config();
@@ -29,6 +49,8 @@ if (!fs.existsSync(playgroundDir)) {
 // Serve static files from the root directory
 app.use(express.static(__dirname));
 
+console.log('After static file middleware');
+
 // Logging middleware
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
@@ -38,8 +60,12 @@ app.use((req, res, next) => {
   next();
 });
 
+console.log('After logging middleware');
+
 // Use the API endpoints
 apiEndpoints(app);
+
+console.log('After API endpoints');
 
 // Start the server
 const PORT = process.env.PORT || 3000;
