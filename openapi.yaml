@@ -95,7 +95,7 @@ paths:
   /api/writefile:
     post:
       operationId: writeFileFunction
-      summary: Write a file
+      summary: Write a file. If the content is too long and generates a truncation error, consider splitting the content and using the appendFunction endpoint.
       requestBody:
         required: true
         content:
