@@ -313,3 +313,28 @@ paths:
                 properties:
                   result:
                     type: string
+  /api/testPython:
+    post:
+      operationId: testPythonFunction
+      summary: Test a Python project with pytest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                path:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string

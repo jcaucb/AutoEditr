@@ -9,6 +9,7 @@ const searchReplace = require('./searchReplace');
 const copy = require('./copy');
 const appendFile = require('./append');
 const writeRange = require('./writeRange');
+const testPython = require('./testPython');
 
 module.exports = (app) => {
   // Define the API endpoints for the plugin
@@ -71,6 +72,12 @@ module.exports = (app) => {
     const replacementText = req.body.replacementText;
     const result = searchReplace(filePath, searchPattern, replacementText);
     res.json(result);
+  });
+
+  // Test a Python project with pytest
+  app.post('/api/testPython', (req, res) => {
+    const relativePath = req.body.path;
+    testPython(relativePath).then(result => res.json(result));
   });
 
   // Copy a file or directory
