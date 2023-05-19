@@ -49,6 +49,16 @@ if (!fs.existsSync(playgroundDir)) {
 // Serve static files from the root directory
 app.use(express.static(__dirname));
 
+// Serve the OpenAPI specification file
+app.get('/openapi.yaml', (req, res) => {
+  res.sendFile(path.join(__dirname, 'openapi.yaml'));
+});
+
+// Serve the plugin manifest file
+app.get('/.well-known/ai-plugin.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'ai-plugin.json'));
+});
+
 console.log('After static file middleware');
 
 // Logging middleware

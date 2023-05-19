@@ -8,6 +8,7 @@ const rename = require('./rename');
 const searchReplace = require('./searchReplace');
 const copy = require('./copy');
 const appendFile = require('./append');
+const writeRange = require('./writeRange');
 
 module.exports = (app) => {
   // Define the API endpoints for the plugin
@@ -36,7 +37,7 @@ module.exports = (app) => {
   // Read a file
   app.get('/api/readFile', (req, res) => {
     const relativePath = req.query.path;
-    const result = readFile(relativePath);
+    const result = readFile(req);
     res.json(result);
   });
 
@@ -85,6 +86,15 @@ module.exports = (app) => {
     const relativePath = req.body.path;
     const data = req.body.data;
     const result = appendFile(relativePath, data);
+    res.json(result);
+  });
+
+  // Replace a range of lines in a file
+  app.post('/api/writeRange', (req, res) => {
+    const relativePath = req.body.path;
+    const lines = req.body.lines;
+    const range = req.body.range;
+    const result = writeRange(relativePath, lines, range);
     res.json(result);
   });
 };

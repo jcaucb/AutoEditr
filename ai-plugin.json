@@ -1,0 +1,19 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "AutoEditr Plugin",
+  "name_for_model": "autoeditr",
+  "description_for_human": "CRUD operations on files in a playgrond folder",
+  "description_for_model": "CRUD operations on files in a playgrond folder. Use appendFunction rather than writeFileFunction for longer than 2000 tokens",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:3000/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "http://localhost:3000/logo.png",
+  "contact_email": "your-email@example.com",
+  "legal_info_url": "http://example.com/legal"
+}
+

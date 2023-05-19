@@ -18,7 +18,8 @@ function isPathInPlayground(targetPath) {
  * @param {string} relativePath - The relative path of the file to read.
  * @returns {Object} An object containing the result or an error message.
  */
-function readFile(relativePath) {
+function readFile(req) {
+  const relativePath = req.query.path;
   if (!isPathInPlayground(relativePath)) {
     return { error: 'Path is outside of the playground directory.' };
   }
@@ -26,7 +27,13 @@ function readFile(relativePath) {
   if (!fs.existsSync(targetPath)) {
     return { error: 'File does not exist.' };
   }
-  const contents = fs.readFileSync(targetPath, 'utf8');
+  let contents = fs.readFileSync(targetPath, 'utf8').split('\n');
+    // If a range is provided, return only the specified lines
+  const range = req.query.range;
+  if (range) {
+    const [start, end] = range.split('-').map(Number);
+    contents = contents.slice(start, end + 1);
+  }
   return { result: contents };
 }
 
