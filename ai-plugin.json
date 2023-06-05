@@ -2,8 +2,12 @@
   "schema_version": "v1",
   "name_for_human": "AutoEditr Plugin",
   "name_for_model": "autoeditr",
-  "description_for_human": "CRUD operations on files in a playgrond folder",
-  "description_for_model": "CRUD operations on files in a playgrond folder. Use appendFunction rather than writeFileFunction for longer than 2000 tokens",
+  "description_for_human": "CRUD operations on files in a playground folder",
+  "description_for_model": "CRUD operations on files in a playground folder. To write longer documents (>1000 tokens), use writeFileFunction for the 
+first paragraph or code block, then use appendFunction to write subsequent sections. Always use readFileFunction to check an existing document before 
+modifying or replacing it. To modify a specific region of a file, first use readFileFunction then searchReplaceFunction then readFileFunction again 
+to confirm changes are as intended.  The root of path of the playground folder path for listFunction is "".  If you are unable to read a file, use 
+listFunction to find the correct path.",
   "auth": {
     "type": "none"
   },
@@ -16,4 +20,5 @@
   "contact_email": "your-email@example.com",
   "legal_info_url": "http://example.com/legal"
 }
+
 
