@@ -1,4 +1,4 @@
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
@@ -15,14 +15,25 @@ function testPython(relativePath) {
     const venvExists = fs.existsSync(venvPath);
     console.log(`Venv exists: ${venvExists}`);
 
-    exec(`source venv/bin/activate && pytest`, { cwd: absolutePath }, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        reject({ status: 'error', message: `Error running pytest: ${error}` });
+    const pytest = spawn('source venv/bin/activate && pytest -v --tb=long', { cwd: absolutePath, shell: true });
+
+    let pytestOutput = '';
+
+    pytest.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+      pytestOutput += data;
+    });
+
+    pytest.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+      pytestOutput += data;
+    });
+
+    pytest.on('close', (code) => {
+      if (code !== 0) {
+        reject({ status: 'error', message: `pytest exited with code ${code}. Output: ${pytestOutput}` });
       } else {
-        console.log(`stdout: ${stdout}`);
-        console.error(`stderr: ${stderr}`);
-        resolve({ status: 'success', message: stdout });
+        resolve({ status: 'success', message: `pytest completed successfully. Output: ${pytestOutput}` });
       }
     });
   }).catch(error => {
