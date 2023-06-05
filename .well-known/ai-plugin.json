@@ -2,8 +2,9 @@
   "schema_version": "v1",
   "name_for_human": "AutoEditr Plugin",
   "name_for_model": "autoeditr",
-  "description_for_human": "CRUD operations on files in a playgrond folder",
-  "description_for_model": "CRUD operations on files in a playgrond folder. Use appendFunction rather than writeFileFunction for longer than 2000 tokens",
+  "description_for_human": "CRUD operations on files in a playground folder",
+  "description_for_model": "CRUD operations on files in a playground folder.\nInstructions:\n* Listing the 'playground' or \"root folder\"\n\t** Invoke listFunction on simply \"\", not \".\"\n\t** Whenever there is uncertainty about a path, do listFunction recursively from the playground to find the correct path\n\t\n* Writing a New File:\n\t1. Do listFunction for the folder in which you wish to add the new file\n\t\tIf the file already exists, read it, and then reconsider the options on how to proceed.\n\t\tIf the list request fails, do listFunction of the parent folder, and repeat this until you find what you are expecting\n\t2. Write the first paragraph or code block of the document using writeFileFunction.  The token limit is around 1000 words, so you typically cannot write an entire file with one API call.\n\t3. Use appendFunction iteratively to write the remaining blocks or paragraphs.\n\t4. Finally, reread the file to confirm it is correct.  If it is not correct, repair it by Modifying an Existing File\n\n* Modifying an Existing File:\n\t1. Use readFileFunction to check if the file exists and read its content\n\t\tIf the file reads successfully, proceed\n\t\tIf the read fails, use listFunction recursively from the root folder to find the correct path\n\t2. Decide on the most efficient route to make the edits\n\t\tIf the change is limited to one line, use searchReplaceFunction\n\t\tIf the change is limited to a contiguous range of lines, use writeRangeFunction\n\t\tIf the change is at the end of the file, use appendFunction\n\t\tOtherwise, follow instructions for Writing a New File.\n\t3. Regardless of the outcome, read the file to confirm it is correct.  If it is not correct, repair it by Modifying an Existing File",
+
   "auth": {
     "type": "none"
   },
@@ -16,4 +17,5 @@
   "contact_email": "your-email@example.com",
   "legal_info_url": "http://example.com/legal"
 }
+
 

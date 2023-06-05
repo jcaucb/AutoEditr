@@ -27,14 +27,23 @@ function readFile(req) {
   if (!fs.existsSync(targetPath)) {
     return { error: 'File does not exist.' };
   }
-  let contents = fs.readFileSync(targetPath, 'utf8').split('\n');
-    // If a range is provided, return only the specified lines
+  const fileContents = fs.readFileSync(targetPath, 'utf8').split('\n');
+  const result = {};
+  
+  // If a range is provided, return only the specified lines
   const range = req.query.range;
   if (range) {
     const [start, end] = range.split('-').map(Number);
-    contents = contents.slice(start, end + 1);
+    for (let i = start; i <= end; i++) {
+      result[i] = fileContents[i];
+    }
+  } else {
+    fileContents.forEach((line, index) => {
+      result[index] = line;
+    });
   }
-  return { result: contents };
+  
+  return { result };
 }
 
 module.exports = readFile;

@@ -258,7 +258,7 @@ paths:
   /api/readfile:
     get:
       operationId: readFileFunction
-      summary: Read a file. If an error occurs due to the filename not being available, consider using the listFunction recursively to see available files.
+      summary: Reads a file and provides a response in the form of an object, where the keys represent the line indices, and the corresponding values represent the content of each line in the document.
       parameters:
       - in: query
         name: path
@@ -281,8 +281,8 @@ paths:
                 type: object
                 properties:
                   result:
-                    type: array
-                    items:
+                    type: object
+                    additionalProperties:
                       type: string
   /api/writerange:
     post:
